@@ -44,6 +44,10 @@ You can also configure your secret token that will be registered on your jhipste
 
 Here, you will configure the jhipster registry password, as well as the cloud config uri.
 
+#### File: resources\trust.jks
+
+If you need a java key store file to connect to your t-vault instance, place the keystore file here, with the name "trust.jks"
+
 Once all these are configured, you can start running qAPI locally.
 
 
