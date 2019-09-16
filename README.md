@@ -1,4 +1,4 @@
-# qAPI
+# qAPI - Translating database queries into API calls
 
 qAPI is a JHipster project created by T-Mobile. qAPI allows users to transfer database connections and queries from their tests to an API service, which testers can integrate to retrieve and validate data from a database through API calls.
 
