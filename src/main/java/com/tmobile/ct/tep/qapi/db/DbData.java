@@ -66,12 +66,12 @@ public class DbData {
         if (type instanceof JdbcTemplate) {
             jdbcTemplate = (JdbcTemplate) type;
             try {
-                result = extraJdbcQuery(jdbcTemplate, queryParams);
+                result = extractResultJdbcQuery(jdbcTemplate, queryParams);
             } catch (Exception e) {
                 try {
                     jdbcTemplate = (JdbcTemplate) routingDataSourceConfiguration.reconnect(env, l1);
                     if (jdbcTemplate.getDataSource().getConnection().isValid(10)) {
-                        result = extraJdbcQuery(jdbcTemplate, queryParams);
+                        result = extractResultJdbcQuery(jdbcTemplate, queryParams);
                     } else {
                         return new ReturnObject("Failed to connect to database for: " + env, HttpStatus.BAD_REQUEST);
                     }
@@ -112,7 +112,7 @@ public class DbData {
         return new ReturnObject(result, HttpStatus.OK);
     }
 
-    private List extraJdbcQuery(JdbcTemplate jdbcTemplate, QueryParams queryParams) {
+    private List extractResultJdbcQuery(JdbcTemplate jdbcTemplate, QueryParams queryParams) {
         return jdbcTemplate.query(queryParams.getSqlPreparedStatement(), new PreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement preparedStatement) throws SQLException {
