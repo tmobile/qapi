@@ -50,7 +50,30 @@ Here, you will configure the jhipster registry password, as well as the cloud co
 
 If you need a java key store file to connect to your t-vault instance, place the keystore file here, with the name "trust.jks"
 
+#### Running qAPI and testing it
 Once all these are configured, you can start running qAPI locally.
 
+Once running locally or hosted somewhere, you can start testing out the qAPI. Below is instructions for how to make a request.
 
+The path of the request
+((host-url))/api/datareader/{L1}/{L2}/v1/{env}, ex: localhost:8081/api/datareader/teamA/getusers/v1/prod
 
+- L1 - indicates the name of the config file belonging to a particular customer, as well as the name of the t-vault safe. 
+
+- L2 - the name of the query statement they choose to use from their config file.
+
+- Version - is the version of the API they prefer to use. As of now, there is V1 that gives a helpful message in the response when running into issues. V2 only has the query results in the response.
+
+- Env - (Optional) The folder in their t-vault safe they wish to use. If you have nested folders in the tvault, that is fine. Simply separate the folders with "/".
+
+Additionally, there should be 2 headers to the request.
+- Content-Type - application/json
+- Authorization - Bearer {tokenValue}
+
+The tokenValue should be the token retrieved from your jhipster registry gateway that you have configured. 
+
+Finally, the body of the request will be passing any dynamic values necessary for the query specified. If no parameter is needed, simply pass in an empty json body.
+
+You should see the result of the query as the response of the request.
+
+For more documentation and instructions for qAPI, please check the wiki at https://github.com/tmobile/qapi/wiki
