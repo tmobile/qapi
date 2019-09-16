@@ -34,7 +34,7 @@ Here, you will configure the following values:
 Note, that using T-vault is not mandatory, but is the default way of managing secrets in qAPI. If you choose to implement another secret management tool, changes will have to be made in the RoutingDataSourceConfiguration.java class.
 
 Additionally, in the repository configured under 'repoLocation', you must have at least one config file.
-For more instructions on how to write a config file, follow this wiki step: 
+For more instructions on how to write a config file, follow this wiki step: https://github.com/tmobile/qapi/wiki/Repository-for-query-config-files
 
 #### Files: resources\config\application.dev.yml, resources\config\application-prod.yml
 
