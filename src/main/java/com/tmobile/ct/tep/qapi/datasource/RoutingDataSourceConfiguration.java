@@ -8,10 +8,12 @@ import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import com.tmobile.ct.tep.qapi.config.ApplicationProperties;
 import com.tmobile.ct.tep.qapi.exceptions.ApiFailureException;
 import com.tmobile.ct.tep.qapi.exceptions.DbConnectionException;
+import com.tmobile.ct.tep.qapi.exceptions.TvaultConfigurationException;
 import com.tmobile.ct.tep.qapi.tvaultclient.TVaultAuthService;
 import com.tmobile.ct.tep.qapi.tvaultclient.domain.AppRoleCredentials;
 import com.tmobile.ct.tep.qapi.tvaultclient.domain.Secrets;
 import oracle.jdbc.pool.OracleDataSource;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +36,19 @@ public class RoutingDataSourceConfiguration {
 
     private static HashMap<String, Session> sessions = new HashMap<>();
 
+    /**
+     * Gets secrets from T-vault (Modify/implement another method if t-vault is not being used)
+     * @param env The environment folder in the safe that contains the secrets
+     * @param l1 the safe name for t-vault
+     * @return hashmap of secrets retrieved using the t-vault API
+     * @throws ApiFailureException
+     */
     private HashMap<String,String> getSecrets(String env, String l1) throws ApiFailureException {
+        if (StringUtils.isBlank(applicationProperties.getConfiguration().getTvaultHost()) || StringUtils.isBlank(applicationProperties.getConfiguration().getRoleId())
+         || StringUtils.isBlank(applicationProperties.getConfiguration().getSecretId())){
+            logger.error("T-Vault configuration is missing");
+            throw new TvaultConfigurationException("T-Vault configuration is missing");
+        }
         tVaultAuthService.initConfig();
         AppRoleCredentials appRoleCredentials = new AppRoleCredentials(applicationProperties.getConfiguration().getRoleId(),
                 applicationProperties.getConfiguration().getSecretId());
@@ -54,9 +68,15 @@ public class RoutingDataSourceConfiguration {
             return sessions.get(l1_env);
         }
         else{
-            logger.info("before getting secrets");
-            HashMap<String, String> received = getSecrets(env,l1);
-            logger.info("received secrets from vault");
+            HashMap<String, String> received;
+            try {
+                logger.info("before getting secrets");
+                received = getSecrets(env, l1);
+                logger.info("received secrets from vault");
+            }catch (TvaultConfigurationException e){
+                //TODO: implement other secret management tool besides T-Vault
+                throw new TvaultConfigurationException(e.getMessage() +" and no other configuration has been implemented.");
+            }
             String[] keys = received.keySet().toArray(new String[received.size()]);
             boolean isCassandra = false;
             boolean isOracle = false;
@@ -116,7 +136,7 @@ public class RoutingDataSourceConfiguration {
         return getConnection(env,l1);
     }
 
-    public void remove(String l1_env){
+    private void remove(String l1_env){
         if (dataSources.get(l1_env) != null){
             try {
                 dataSources.get(l1_env).getConnection().close();

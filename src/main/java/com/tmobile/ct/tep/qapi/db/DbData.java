@@ -13,6 +13,7 @@ import com.tmobile.ct.tep.qapi.domain.QueryParams;
 import com.tmobile.ct.tep.qapi.domain.ReturnObject;
 import com.tmobile.ct.tep.qapi.exceptions.ApiFailureException;
 import com.tmobile.ct.tep.qapi.exceptions.DbConnectionException;
+import com.tmobile.ct.tep.qapi.exceptions.TvaultConfigurationException;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,6 +59,8 @@ public class DbData {
         } catch (ApiFailureException e) {
             return new ReturnObject(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (DbConnectionException e) {
+            return new ReturnObject(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (TvaultConfigurationException e){
             return new ReturnObject(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
 

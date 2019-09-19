@@ -77,19 +77,6 @@ public class Controller {
         return result.getResult();
     }
 
-    @PostMapping(value= "/{L1identifier}/{L2identifier}/refresh/**", produces= MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity refresh(@RequestBody JSONObject body, @PathVariable String L1identifier, @PathVariable String L2identifier, HttpServletRequest request){
-        ReturnObject result = new ReturnObject();
-        String env = getResultWithEnv(request);
-        String l1_env = L1identifier +"/" +env;
-        logger.info("Refreshing connection: " +l1_env);
-        routingDataSourceConfiguration.remove(l1_env);
-        result.setMessage("Connection succesfully refreshed.");
-        ResponseEntity r = new ResponseEntity("Connection succesfully refreshed.", HttpStatus.OK);
-        logger.info("Post Response sent");
-        return r;
-    }
-
     @PostMapping(value="/scan")
     public ResponseEntity scan(){
         repoService.scan();
