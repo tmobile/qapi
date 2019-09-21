@@ -10,9 +10,9 @@ Below are instructions that will help you get started in getting the qAPI up and
 
 | Prerequisite | Command to verify | Description |
 | ------------ | -------------- | -----------  |
-| Java Runtime Environment (JRE) 1.8.x | java -version | As it is a Java project, Java need to be installed locally.
+| Java Runtime Environment (JRE) 1.8.x | java -version | As it is a Java project, Java needs to be installed locally.
 | Maven | mvn --version | Maven is needed to download project dependencies.
-| T-Vault | N/A | The project uses T-mobiles open sourced secret management tool T-Vault, for maintaining all database credentials. Please refer to https://github.com/tmobile/t-vault for more information on T-Vault.
+| T-Vault | N/A | The project uses T-mobile's open sourced secret management tool T-Vault, for maintaining all database credentials. Please refer to https://github.com/tmobile/t-vault for more information on T-Vault.
 | Oracle JDBC driver | N/A | The oracle JDBC driver needs to be retrieved from the Oracle website, and once accepting the license terms, the jar can be saved on your local machine/artifactory. Oracle website: https://www.oracle.com/database/technologies/appdev/jdbc-downloads.html Instructions to have pom dependency working: https://www.mkyong.com/maven/how-to-add-oracle-jdbc-driver-in-your-maven-local-repository/
 
 ### Configuration
