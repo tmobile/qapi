@@ -14,6 +14,7 @@ Below are instructions that will help you get started in getting the qAPI up and
 | Maven | mvn --version | Maven is needed to download project dependencies.
 | T-Vault | N/A | The project uses T-mobile's open sourced secret management tool T-Vault, for maintaining all database credentials. Please refer to https://github.com/tmobile/t-vault for more information on T-Vault.
 | Oracle JDBC driver | N/A | The oracle JDBC driver needs to be retrieved from the Oracle website, and once accepting the license terms, the jar can be saved on your local machine/artifactory. Oracle website: https://www.oracle.com/database/technologies/appdev/jdbc-downloads.html Instructions to have pom dependency working: https://www.mkyong.com/maven/how-to-add-oracle-jdbc-driver-in-your-maven-local-repository/
+| Git (Optional) | N/A | You can use git to clone the project locally, or choose to simply download the project as a zip file. To clone the project, using your favorite git GUI tool or from your command line, type: `git clone https://github.com/tmobile/qapi.git` 
 
 ### Configuration
 
