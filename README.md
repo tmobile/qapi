@@ -26,7 +26,7 @@ At the bottom of the file, you will see a section for application -> configurati
 Here, you will configure the following values:
 - roleId: Tvault parameter to authenticate via approle
 - secretId: TVault parameter to authenticate via approle
-- tvaultHost: Host url to your t-vault instance. Example: https://myt-vault.myorg.com
+- tvaultHost: Host url to your t-vault instance. Example: ` https://myt-vault.myorg.com `
 - repoLocation: Repository where the queries are configured
 - repoRoot: Root folder/folders to where the config files live in the repository
 - branch: The branch of the config repository to be used
