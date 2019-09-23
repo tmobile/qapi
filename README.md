@@ -53,6 +53,11 @@ If you need a java key store file to connect to your t-vault instance, place the
 #### Running qAPI and testing it
 Once all these are configured, you can start running qAPI locally.
 
+You can run the project locally by going to the root folder of the project(qAPI) on your terminal and running:
+```
+mvn spring-boot:run 
+```
+
 Once running locally or hosted somewhere, you can start testing out the qAPI. Below is instructions for how to make a request.
 
 The path of the request
