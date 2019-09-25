@@ -13,19 +13,47 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)
 public class ApplicationProperties {
 
-    private final Configuration configuration = new Configuration();
+    private final SecretManagement secretManagement = new SecretManagement();
+    private final Tvault tvault = new Tvault();
+    private final Configuration repoconfiguration = new Configuration();
 
-    public Configuration getConfiguration(){
-        return this.configuration;
+    public SecretManagement getSecretManagement() {
+        return secretManagement;
     }
-    public static class Configuration {
 
+    public Tvault getTvault() {
+        return tvault;
+    }
+
+    public Configuration getRepoConfiguration(){
+        return this.repoconfiguration;
+    }
+
+    public static class SecretManagement {
+        private String encryptionPassword;
+        private Boolean tvaultEnabled;
+
+        public String getEncryptionKey() {
+            return encryptionPassword;
+        }
+
+        public void setEncryptionKey(String encryptionKey) {
+            this.encryptionPassword = encryptionKey;
+        }
+
+        public Boolean getTvaultEnabled() {
+            return tvaultEnabled;
+        }
+
+        public void setTvaultEnabled(Boolean tvaultEnabled) {
+            this.tvaultEnabled = tvaultEnabled;
+        }
+    }
+
+    public static class Tvault {
         private String roleId;
         private String secretId;
         private String tvaultHost;
-        private String repoLocation;
-        private String repoRoot;
-        private String branch;
 
         public String getRoleId() {
             return roleId;
@@ -50,6 +78,12 @@ public class ApplicationProperties {
         public void setTvaultHost(String tvaultHost) {
             this.tvaultHost = tvaultHost;
         }
+    }
+
+    public static class Configuration {
+        private String repoLocation;
+        private String repoRoot;
+        private String branch;
 
         public String getRepoLocation() {
             return repoLocation;

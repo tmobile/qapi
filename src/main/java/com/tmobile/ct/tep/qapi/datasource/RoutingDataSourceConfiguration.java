@@ -12,7 +12,10 @@ import com.tmobile.ct.tep.qapi.exceptions.TvaultConfigurationException;
 import com.tmobile.ct.tep.qapi.tvaultclient.TVaultAuthService;
 import com.tmobile.ct.tep.qapi.tvaultclient.domain.AppRoleCredentials;
 import com.tmobile.ct.tep.qapi.tvaultclient.domain.Secrets;
+import net.lingala.zip4j.ZipFile;
+import net.lingala.zip4j.exception.ZipException;
 import oracle.jdbc.pool.OracleDataSource;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,9 +23,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import javax.annotation.PostConstruct;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.sql.DataSource;
+import java.io.*;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Scanner;
 
 @Configuration
 public class RoutingDataSourceConfiguration {
@@ -37,6 +48,29 @@ public class RoutingDataSourceConfiguration {
     private static HashMap<String, Session> sessions = new HashMap<>();
 
     /**
+     * Decrypts local files at startup, if T-vault is disabled.
+     */
+    @PostConstruct
+    private void decryptZip() {
+        if (!applicationProperties.getSecretManagement().getTvaultEnabled()){
+            File pastFiles = new File("secrets");
+            try {
+                FileUtils.deleteDirectory(pastFiles);
+            } catch (IOException e) {
+                logger.info("Could not delete past files");
+            }
+
+            ZipFile zipFile = new ZipFile(new File(getClass().getClassLoader().getResource("secrets.zip").getFile()));
+            try {
+                zipFile.setPassword(applicationProperties.getSecretManagement().getEncryptionKey().toCharArray());
+                zipFile.extractAll("secrets/");
+            } catch (ZipException e) {
+                logger.error("Could not extract zipfile. [{}]",e.getMessage());
+            }
+        }
+    }
+
+    /**
      * Gets secrets from T-vault (Modify/implement another method if t-vault is not being used)
      * @param env The environment folder in the safe that contains the secrets
      * @param l1 the safe name for t-vault
@@ -44,21 +78,50 @@ public class RoutingDataSourceConfiguration {
      * @throws ApiFailureException
      */
     private HashMap<String,String> getSecrets(String env, String l1) throws ApiFailureException {
-        if (StringUtils.isBlank(applicationProperties.getConfiguration().getTvaultHost()) || StringUtils.isBlank(applicationProperties.getConfiguration().getRoleId())
-         || StringUtils.isBlank(applicationProperties.getConfiguration().getSecretId())){
-            logger.error("T-Vault configuration is missing");
-            throw new TvaultConfigurationException("T-Vault configuration is missing");
+        if (StringUtils.isBlank(applicationProperties.getTvault().getTvaultHost()) || StringUtils.isBlank(applicationProperties.getTvault().getRoleId())
+         || StringUtils.isBlank(applicationProperties.getTvault().getSecretId())){
+            logger.error("T-Vault configuration is enabled but some configuration is missing");
+            throw new TvaultConfigurationException("T-Vault configuration is enabled but some configuration is missing");
         }
         tVaultAuthService.initConfig();
-        AppRoleCredentials appRoleCredentials = new AppRoleCredentials(applicationProperties.getConfiguration().getRoleId(),
-                applicationProperties.getConfiguration().getSecretId());
+        AppRoleCredentials appRoleCredentials = new AppRoleCredentials(applicationProperties.getTvault().getRoleId(),
+                applicationProperties.getTvault().getSecretId());
         String token = tVaultAuthService.auth(appRoleCredentials);
         String safepath = "shared/" +l1 +"/" +env;
         Secrets secrets = tVaultAuthService.getSecrets(token,safepath);
         return secrets.getData();
     }
 
-    public Object getConnection(String env,String l1) throws ApiFailureException{
+    /**
+     * Get secrets from File (File = {l1}/{env}.txt in encrypted zip under resources/ folder) . Note: {env} can have nested folders as well.
+     * @param env
+     * @param l1
+     * @return
+     */
+    private HashMap<String,String> getSecretsFromFile(String env, String l1) throws FileNotFoundException {
+        File file = new File("secrets/" + l1 + "/" + env + ".txt");
+        Scanner scanner = null;
+        FileInputStream fileInputStream = null;
+        try {
+            fileInputStream = new FileInputStream(file);
+            scanner = new Scanner(fileInputStream);
+            HashMap<String, String> secrets = new HashMap<>();
+            while (scanner.hasNextLine()) {
+                String value[] = scanner.nextLine().split("=");
+                secrets.put(value[0], value[1]);
+            }
+            return secrets;
+        } finally {
+            scanner.close();
+            try {
+                fileInputStream.close();
+            } catch (IOException e) {
+                logger.error("Unable to close input stream: [{}]",e.getMessage());
+            }
+        }
+    }
+
+    public Object getConnection(String env,String l1) throws ApiFailureException, IOException {
         String l1_env = l1 +"/" +env;
         if (dataSources.get(l1_env) != null){
             logger.info("DataSource already exists. Using existing source.");
@@ -67,16 +130,18 @@ public class RoutingDataSourceConfiguration {
             logger.info("DataSource already exists (Cassandra). Using existing source.");
             return sessions.get(l1_env);
         }
-        else{
+        else {
+
             HashMap<String, String> received;
-            try {
-                logger.info("before getting secrets");
+            logger.info("before getting secrets");
+            if (applicationProperties.getSecretManagement().getTvaultEnabled()){
                 received = getSecrets(env, l1);
-                logger.info("received secrets from vault");
-            }catch (TvaultConfigurationException e){
-                //TODO: implement other secret management tool besides T-Vault
-                throw new TvaultConfigurationException(e.getMessage() +" and no other configuration has been implemented.");
+                logger.info("Received secrets from vault.");
+            } else {
+                received = getSecretsFromFile(env, l1);
+                logger.info("Received secrets from file.");
             }
+
             String[] keys = received.keySet().toArray(new String[received.size()]);
             boolean isCassandra = false;
             boolean isOracle = false;
@@ -115,7 +180,7 @@ public class RoutingDataSourceConfiguration {
                     return new JdbcTemplate(dataSources.get(l1_env));
                 } catch (SQLException e) {
                     logger.error("Oracle SQL Exception: [{}]",e.getMessage());
-                    throw new DbConnectionException("Failed to connect to database specified. Verify connection configuration is correct on T-Vault.");
+                    throw new DbConnectionException("Failed to connect to database specified. Verify connection configuration is correct.");
                 }
             } else if (isSqlServer){
                 SQLServerDataSource dataSource = new SQLServerDataSource();
@@ -130,7 +195,8 @@ public class RoutingDataSourceConfiguration {
         }
     }
 
-    public Object reconnect(String env,String l1){
+    public Object reconnect(String env,String l1) throws IOException, NoSuchPaddingException,
+        NoSuchAlgorithmException, BadPaddingException, IllegalBlockSizeException, InvalidKeyException {
         String l1_env = l1 +"/" +env;
         remove(l1_env);
         return getConnection(env,l1);

@@ -82,7 +82,7 @@ public class DbService {
         JSONParser parser = new JSONParser();
         Object object;
         logger.info("Before accessing config file.");
-        File file = new File(repoService.getRepoDir() +File.separator + applicationProperties.getConfiguration().getRepoRoot() + File.separator + l1 + ".json");
+        File file = new File(repoService.getRepoDir() +File.separator + applicationProperties.getRepoConfiguration().getRepoRoot() + File.separator + l1 + ".json");
 
         if(file.exists()){
             FileReader fileReader = new FileReader(file);

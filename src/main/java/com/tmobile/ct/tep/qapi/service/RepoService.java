@@ -35,10 +35,10 @@ public class RepoService {
 
     public void getFiles(){
         if (repoLocation == null || repoLocation.equals("")){
-            repoLocation = applicationProperties.getConfiguration().getRepoLocation();
+            repoLocation = applicationProperties.getRepoConfiguration().getRepoLocation();
         }
         if (this.branch == null || branch.equals("")){
-            branch = applicationProperties.getConfiguration().getBranch();
+            branch = applicationProperties.getRepoConfiguration().getBranch();
         }
         File dir = new File("repository");
         if (!dir.exists()){
@@ -59,7 +59,7 @@ public class RepoService {
         try {
             FileUtils.forceDelete(new File(dir));
         } catch(IOException e){
-            logger.debug("ERROR: Unable to delete: " +dir);
+            logger.debug("ERROR: Unable to delete: [{}]", e.getMessage());
         }
 
     }

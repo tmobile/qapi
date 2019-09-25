@@ -11,9 +11,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tmobile.ct.tep.qapi.datasource.RoutingDataSourceConfiguration;
 import com.tmobile.ct.tep.qapi.domain.QueryParams;
 import com.tmobile.ct.tep.qapi.domain.ReturnObject;
-import com.tmobile.ct.tep.qapi.exceptions.ApiFailureException;
-import com.tmobile.ct.tep.qapi.exceptions.DbConnectionException;
-import com.tmobile.ct.tep.qapi.exceptions.TvaultConfigurationException;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,10 +22,7 @@ import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Component;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.sql.PreparedStatement;
@@ -56,11 +50,7 @@ public class DbData {
         Object type;
         try {
             type = routingDataSourceConfiguration.getConnection(env, l1);
-        } catch (ApiFailureException e) {
-            return new ReturnObject(e.getMessage(), HttpStatus.BAD_REQUEST);
-        } catch (DbConnectionException e) {
-            return new ReturnObject(e.getMessage(), HttpStatus.BAD_REQUEST);
-        } catch (TvaultConfigurationException e){
+        } catch (Exception e) {
             return new ReturnObject(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
@@ -80,6 +70,8 @@ public class DbData {
                     }
                 } catch (SQLException ex) {
                     return new ReturnObject("Failed to connect to database for: " + env, HttpStatus.BAD_REQUEST);
+                } catch (Exception ex) {
+                    return new ReturnObject(ex.getMessage(), HttpStatus.BAD_REQUEST);
                 }
             }
         } else if (type instanceof Session) {

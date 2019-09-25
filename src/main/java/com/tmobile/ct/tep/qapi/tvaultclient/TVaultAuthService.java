@@ -36,7 +36,7 @@ public class TVaultAuthService {
 
 	public void initConfig() {
 		this.properties = new Settings().getProperties();
-		this.authUrl = applicationProperties.getConfiguration().getTvaultHost();
+		this.authUrl = applicationProperties.getTvault().getTvaultHost();
 		this.retroClient = new RetroClient(this.properties);
 		this.maxRequestRetries = Integer.parseInt(properties.getProperty(Config.TEP_MAX_RETRIES));
 		this.failFast = Boolean.parseBoolean(properties.getProperty(Config.TEP_FAIL_FAST));
