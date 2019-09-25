@@ -10,10 +10,11 @@ Below are instructions that will help you get started in getting the qAPI up and
 
 | Prerequisite | Command to verify | Description |
 | ------------ | -------------- | -----------  |
-| Java Runtime Environment (JRE) 1.8.x | java -version | As it is a Java project, Java need to be installed locally.
+| Java Runtime Environment (JRE) 1.8.x | java -version | As it is a Java project, Java needs to be installed locally.
 | Maven | mvn --version | Maven is needed to download project dependencies.
-| T-Vault | N/A | The project uses T-mobiles open sourced secret management tool T-Vault, for maintaining all database credentials. Please refer to https://github.com/tmobile/t-vault for more information on T-Vault.
+| T-Vault | N/A | The project uses T-mobile's open sourced secret management tool T-Vault, for maintaining all database credentials. Please refer to https://github.com/tmobile/t-vault for more information on T-Vault.
 | Oracle JDBC driver | N/A | The oracle JDBC driver needs to be retrieved from the Oracle website, and once accepting the license terms, the jar can be saved on your local machine/artifactory. Oracle website: https://www.oracle.com/database/technologies/appdev/jdbc-downloads.html Instructions to have pom dependency working: https://www.mkyong.com/maven/how-to-add-oracle-jdbc-driver-in-your-maven-local-repository/
+| Git (Optional) | N/A | You can use git to clone the project locally, or choose to simply download the project as a zip file. To clone the project, using your favorite git GUI tool or from your command line, type: `git clone https://github.com/tmobile/qapi.git` 
 
 ### Configuration
 
@@ -26,7 +27,7 @@ At the bottom of the file, you will see a section for application -> configurati
 Here, you will configure the following values:
 - roleId: Tvault parameter to authenticate via approle
 - secretId: TVault parameter to authenticate via approle
-- tvaultHost: Host url to your t-vault instance. Example: https://myt-vault.myorg.com
+- tvaultHost: Host url to your t-vault instance. Example: ` https://myt-vault.myorg.com `
 - repoLocation: Repository where the queries are configured
 - repoRoot: Root folder/folders to where the config files live in the repository
 - branch: The branch of the config repository to be used
@@ -52,6 +53,11 @@ If you need a java key store file to connect to your t-vault instance, place the
 
 #### Running qAPI and testing it
 Once all these are configured, you can start running qAPI locally.
+
+You can run the project locally by going to the root folder of the project(qAPI) on your terminal and running:
+```
+mvn spring-boot:run 
+```
 
 Once running locally or hosted somewhere, you can start testing out the qAPI. Below is instructions for how to make a request.
 
