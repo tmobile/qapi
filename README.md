@@ -52,7 +52,7 @@ You can also configure your secret token that will be registered on your jhipste
 
 Here, you will configure the jhipster registry password, as well as the cloud config uri.
 
-### Files: resources\secrets.zip
+#### Files: resources\secrets.zip
 
 If you are using the default method of managing secrets with a zip in the local root, place a zip file called "secrets.zip", that is encryped with AES and password protected. This can be done with common programs such as 7-Zip. For more information on the structure of these files, please visit the wiki Sub-Page:
 
