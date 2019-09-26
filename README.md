@@ -40,7 +40,7 @@ Here, you will configure the following values:
 Note, that using T-vault is not mandatory, but is the default way of managing secrets in qAPI. If you choose to implement another secret management tool, changes will have to be made in the RoutingDataSourceConfiguration.java class.
 
 Additionally, in the repository configured under 'repoLocation', you must have at least one config file.
-For more instructions on how to write a config file, follow this wiki step: https://github.com/tmobile/qapi/wiki/Repository-for-query-config-files
+For more instructions on how to write a config file, follow this wiki step: [Repository for query config files](https://github.com/tmobile/qapi/wiki/Repository-for-query-config-files)
 
 #### Files: resources\config\application.dev.yml, resources\config\application-prod.yml
 
@@ -54,7 +54,7 @@ Here, you will configure the jhipster registry password, as well as the cloud co
 
 #### Files: resources\secrets.zip
 
-If you are using the default method of managing secrets with a zip in the local root, place a zip file called "secrets.zip", that is encryped with AES and password protected. This can be done with common programs such as 7-Zip. For more information on the structure of these files, please visit the wiki Sub-Page:
+If you are using the default method of managing secrets with a zip in the local root, place a zip file called "secrets.zip", that is encryped with AES and password protected. This can be done with common programs such as 7-Zip. For more information on the structure of these files, please visit the wiki Sub-Page: [Locally Encrypted Secret Files](https://github.com/tmobile/qapi/wiki/Locally-encrypted-secret-files)
 
 #### File: resources\trust.jks
 
@@ -91,4 +91,4 @@ Finally, the body of the request will be passing any dynamic values necessary fo
 
 You should see the result of the query as the response of the request.
 
-For more documentation and instructions for qAPI, please check the wiki at https://github.com/tmobile/qapi/wiki
+For more documentation and instructions for qAPI, please check our [Wiki](https://github.com/tmobile/qapi/wiki)
