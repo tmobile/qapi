@@ -25,17 +25,22 @@ Below are configurations that need to be set before starting up qAPI.
 At the bottom of the file, you will see a section for application -> configuration
  
 Here, you will configure the following values:
-- roleId: Tvault parameter to authenticate via approle
-- secretId: TVault parameter to authenticate via approle
-- tvaultHost: Host url to your t-vault instance. Example: ` https://myt-vault.myorg.com `
-- repoLocation: Repository where the queries are configured
-- repoRoot: Root folder/folders to where the config files live in the repository
-- branch: The branch of the config repository to be used
+- secretManagement (Configuration for secret management)
+    - encryptionPassword: Used to decrypt zip file containing secret files if t-vault is not enabled. Can be blank if t-vault is enabled.
+    - tvaultEnabled: Defaulted to false. If set to true, t-vault will be used to manage secrets.
+- tvault: (Config for T-Vault. Values can be left blank if t-vault is not enabled)
+    - roleId: T-Vault parameter to authenticate via approle
+    - secretId: T-Vault parameter to authenticate via approle
+    - tvaultHost: Host url to your t-vault instance. Example: ` https://myt-vault.myorg.com `
+- repoconfiguration: (Configuration for user specified Repository for query config files)
+    - repoLocation: Repository where the queries are configured (Git link)
+    - repoRoot: Root folder/folders to where the config files live in the repository
+    - branch: The branch of the config repository to be used
 
 Note, that using T-vault is not mandatory, but is the default way of managing secrets in qAPI. If you choose to implement another secret management tool, changes will have to be made in the RoutingDataSourceConfiguration.java class.
 
 Additionally, in the repository configured under 'repoLocation', you must have at least one config file.
-For more instructions on how to write a config file, follow this wiki step: https://github.com/tmobile/qapi/wiki/Repository-for-query-config-files
+For more instructions on how to write a config file, follow this wiki step: [Repository for query config files](https://github.com/tmobile/qapi/wiki/Repository-for-query-config-files)
 
 #### Files: resources\config\application.dev.yml, resources\config\application-prod.yml
 
@@ -46,6 +51,10 @@ You can also configure your secret token that will be registered on your jhipste
 #### Files: resources\config\bootstrap.yml, resources\config\bootstrap-prod.yml
 
 Here, you will configure the jhipster registry password, as well as the cloud config uri.
+
+#### Files: resources\secrets.zip
+
+If you are using the default method of managing secrets with a zip in the local root, place a zip file called "secrets.zip", that is encryped with AES and password protected. This can be done with common programs such as 7-Zip. For more information on the structure of these files, please visit the wiki Sub-Page: [Locally Encrypted Secret Files](https://github.com/tmobile/qapi/wiki/Locally-encrypted-secret-files)
 
 #### File: resources\trust.jks
 
@@ -82,4 +91,4 @@ Finally, the body of the request will be passing any dynamic values necessary fo
 
 You should see the result of the query as the response of the request.
 
-For more documentation and instructions for qAPI, please check the wiki at https://github.com/tmobile/qapi/wiki
+For more documentation and instructions for qAPI, please check our [Wiki](https://github.com/tmobile/qapi/wiki)
