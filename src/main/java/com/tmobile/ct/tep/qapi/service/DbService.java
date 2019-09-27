@@ -82,7 +82,13 @@ public class DbService {
         JSONParser parser = new JSONParser();
         Object object;
         logger.info("Before accessing config file.");
-        File file = new File(repoService.getRepoDir() +File.separator + applicationProperties.getRepoConfiguration().getRepoRoot() + File.separator + l1 + ".json");
+        File file = null;
+        if (applicationProperties.getQueryConfig().getLocation().toLowerCase().trim().equals("local")){
+            file = new File(getClass().getClassLoader().getResource("queryconfigs/" + l1 + ".json").getFile());
+        }
+        else if (applicationProperties.getQueryConfig().getLocation().toLowerCase().trim().equals("repository")){
+            file = new File(repoService.getRepoDir() +File.separator + applicationProperties.getQueryConfig().getRepoRoot() + File.separator + l1 + ".json");
+        }
 
         if(file.exists()){
             FileReader fileReader = new FileReader(file);

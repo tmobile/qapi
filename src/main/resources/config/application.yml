@@ -190,8 +190,9 @@ application:
         roleId: # RoleId for T-vault Authentication
         secretId: # SecretId for T-vault Authentication
         tvaultHost: # Host for T-vault Instance. Example: https://myvault-myname.com
-    # Configuration for user specified repository for query config files
-    repoconfiguration:
-        repoLocation: # Repository location
-        repoRoot: # Rroot in the repository where config files are located
+    # Configuration for location of query config files
+    queryConfig:
+        location: local # Set to 'local' or 'repository' , based on where the query config files are maintained
+        repository: # Repository location
+        repoRoot: # Root in the repository where config files are located
         branch: # Branch on the repository

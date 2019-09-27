@@ -15,7 +15,7 @@ public class ApplicationProperties {
 
     private final SecretManagement secretManagement = new SecretManagement();
     private final Tvault tvault = new Tvault();
-    private final Configuration repoconfiguration = new Configuration();
+    private final QueryConfig queryConfig = new QueryConfig();
 
     public SecretManagement getSecretManagement() {
         return secretManagement;
@@ -25,8 +25,8 @@ public class ApplicationProperties {
         return tvault;
     }
 
-    public Configuration getRepoConfiguration(){
-        return this.repoconfiguration;
+    public QueryConfig getQueryConfig(){
+        return this.queryConfig;
     }
 
     public static class SecretManagement {
@@ -80,17 +80,27 @@ public class ApplicationProperties {
         }
     }
 
-    public static class Configuration {
-        private String repoLocation;
+    public static class QueryConfig {
+
+        private String location;
+        private String repository;
         private String repoRoot;
         private String branch;
 
-        public String getRepoLocation() {
-            return repoLocation;
+        public String getLocation() {
+            return location;
         }
 
-        public void setRepoLocation(String repoLocation) {
-            this.repoLocation = repoLocation;
+        public void setLocation(String location) {
+            this.location = location;
+        }
+
+        public String getRepository() {
+            return repository;
+        }
+
+        public void setRepository(String repository) {
+            this.repository = repository;
         }
 
         public String getRepoRoot() {

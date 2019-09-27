@@ -28,17 +28,19 @@ public class RepoService {
 
     @Scheduled(fixedRate = timeInterval)
     public void scan(){
-        deleteFiles(repoDir);
-        getFiles();
-        logger.info("Repo scan finished.");
+        if (applicationProperties.getQueryConfig().getLocation().toLowerCase().trim().equals("repository")){
+            deleteFiles(repoDir);
+            getFiles();
+            logger.info("Repo scan finished.");
+        }
     }
 
     public void getFiles(){
         if (repoLocation == null || repoLocation.equals("")){
-            repoLocation = applicationProperties.getRepoConfiguration().getRepoLocation();
+            repoLocation = applicationProperties.getQueryConfig().getRepository();
         }
         if (this.branch == null || branch.equals("")){
-            branch = applicationProperties.getRepoConfiguration().getBranch();
+            branch = applicationProperties.getQueryConfig().getBranch();
         }
         File dir = new File("repository");
         if (!dir.exists()){
