@@ -59,10 +59,9 @@ public class RoutingDataSourceConfiguration {
             } catch (IOException e) {
                 logger.info("Could not delete past files");
             }
-
             ZipFile zipFile = new ZipFile(new File(getClass().getClassLoader().getResource("secrets.zip").getFile()));
             try {
-                zipFile.setPassword(applicationProperties.getSecretManagement().getEncryptionKey().toCharArray());
+                zipFile.setPassword(applicationProperties.getSecretManagement().getEncryptionPassword().toCharArray());
                 zipFile.extractAll("secrets/");
             } catch (ZipException e) {
                 logger.error("Could not extract zipfile. [{}]",e.getMessage());

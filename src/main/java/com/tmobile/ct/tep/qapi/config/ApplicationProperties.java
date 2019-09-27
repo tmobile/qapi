@@ -33,12 +33,12 @@ public class ApplicationProperties {
         private String encryptionPassword;
         private Boolean tvaultEnabled;
 
-        public String getEncryptionKey() {
+        public String getEncryptionPassword() {
             return encryptionPassword;
         }
 
-        public void setEncryptionKey(String encryptionKey) {
-            this.encryptionPassword = encryptionKey;
+        public void setEncryptionPassword(String encryptionPassword) {
+            this.encryptionPassword = encryptionPassword;
         }
 
         public Boolean getTvaultEnabled() {

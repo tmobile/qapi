@@ -181,14 +181,17 @@ jhipster:
 # ===================================================================
 
 application:
+    # Configuration for secret management
     secretManagement:
-        encryptionPassword: #will be used to decrypt secret files if t-vault is not enabled.
-        tvaultEnabled: false #if set to true, T-vault will be used to fetch database secrets
-    tvault: #values can be blank if T-vault is disabled
-        roleId: #roleId for T-vault Authentication
-        secretId: #secretId for T-vault Authentication
-        tvaultHost: #host for T-vault Instance. Example: https://myvault-myname.com
+        encryptionPassword: # Will be used to decrypt zip file (AES encrypted) secret files if t-vault is not enabled.
+        tvaultEnabled: false # If set to true, T-vault will be used to fetch database secrets
+    # T-Vault configuration. Values can be blank if T-vault is not enabled
+    tvault:
+        roleId: # RoleId for T-vault Authentication
+        secretId: # SecretId for T-vault Authentication
+        tvaultHost: # Host for T-vault Instance. Example: https://myvault-myname.com
+    # Configuration for user specified repository for query config files
     repoconfiguration:
-        repoLocation: #repository location
-        repoRoot: #root in the repository where config files are located
-        branch: #branch on the repository
+        repoLocation: # Repository location
+        repoRoot: # Rroot in the repository where config files are located
+        branch: # Branch on the repository
