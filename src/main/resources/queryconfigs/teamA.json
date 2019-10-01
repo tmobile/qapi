@@ -1,6 +1,6 @@
 {
   "statements": {
-    "getcustomersbyzipcode": "select * FROM addresses where zipcode = {zipcode}",
+    "getaddressbyzipcode": "select * FROM addresses where zipcode = {zipcode}",
     "getusers": "select * FROM users where id < {id}"
   },
   "default_env": "test"
