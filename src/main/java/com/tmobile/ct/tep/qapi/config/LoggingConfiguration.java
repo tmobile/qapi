@@ -1,3 +1,22 @@
+/*
+ * // =========================================================================
+ * // Copyright © 2019 T-Mobile USA, Inc.
+ * //
+ * // Licensed under the Apache License, Version 2.0 (the "License");
+ * // you may not use this file except in compliance with the License.
+ * // You may obtain a copy of the License at
+ * //
+ * //    http://www.apache.org/licenses/LICENSE-2.0
+ * //
+ * // Unless required by applicable law or agreed to in writing, software
+ * // distributed under the License is distributed on an "AS IS" BASIS,
+ * // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * // See the License for the specific language governing permissions and
+ * // limitations under the License.
+ * // =========================================================================
+ *
+ */
+
 package com.tmobile.ct.tep.qapi.config;
 
 import java.net.InetSocketAddress;
@@ -84,7 +103,7 @@ public class LoggingConfiguration {
 
     private void addJsonConsoleAppender(LoggerContext context) {
         log.info("Initializing Console logging");
-        
+
         // More documentation is available at: https://github.com/logstash/logstash-logback-encoder
         ConsoleAppender<ILoggingEvent> consoleAppender = new ConsoleAppender<>();
         consoleAppender.setContext(context);
@@ -125,14 +144,14 @@ public class LoggingConfiguration {
         compositeJsonEncoder.start();
         return compositeJsonEncoder;
     }
-    
+
     private LogstashEncoder logstashEncoder() {
         final LogstashEncoder logstashEncoder = new LogstashEncoder();
         logstashEncoder.setThrowableConverter(throwableConverter());
         logstashEncoder.setCustomFields(customFields());
         return logstashEncoder;
     }
-    
+
     private LoggingEventJsonProviders jsonProviders(LoggerContext context) {
         final LoggingEventJsonProviders jsonProviders = new LoggingEventJsonProviders();
         jsonProviders.addArguments(new ArgumentsJsonProvider());
@@ -165,13 +184,13 @@ public class LoggingConfiguration {
         customFields.append("}");
         return customFields.toString();
     }
-    
+
     private LoggerNameJsonProvider loggerNameJsonProvider() {
         final LoggerNameJsonProvider loggerNameJsonProvider = new LoggerNameJsonProvider();
         loggerNameJsonProvider.setShortenedLoggerNameLength(20);
         return loggerNameJsonProvider;
     }
-    
+
     private StackTraceJsonProvider stackTraceJsonProvider() {
         StackTraceJsonProvider stackTraceJsonProvider = new StackTraceJsonProvider();
         stackTraceJsonProvider.setThrowableConverter(throwableConverter());
@@ -183,7 +202,7 @@ public class LoggingConfiguration {
         throwableConverter.setRootCauseFirst(true);
         return throwableConverter;
     }
-    
+
     private LoggingEventFormattedTimestampJsonProvider timestampJsonProvider() {
         final LoggingEventFormattedTimestampJsonProvider timestampJsonProvider = new LoggingEventFormattedTimestampJsonProvider();
         timestampJsonProvider.setTimeZone("UTC");
@@ -231,11 +250,11 @@ public class LoggingConfiguration {
      */
     class LogbackLoggerContextListener extends ContextAwareBase implements LoggerContextListener {
         private final JHipsterProperties jHipsterProperties;
-        
+
         private LogbackLoggerContextListener(JHipsterProperties jHipsterProperties) {
             this.jHipsterProperties = jHipsterProperties;
         }
-        
+
         @Override
         public boolean isResetResistant() {
             return true;
