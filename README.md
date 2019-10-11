@@ -33,6 +33,7 @@ Here, you will configure the following values:
     - secretId: T-Vault parameter to authenticate via approle
     - tvaultHost: Host url to your t-vault instance. Example: ` https://myt-vault.myorg.com `
 - repoconfiguration: (Configuration for user specified Repository for query config files)
+    - location: local # Set to 'local' or 'repository', based on where the query config files are maintained
     - repoLocation: Repository where the queries are configured (Git link)
     - repoRoot: Root folder/folders to where the config files live in the repository
     - branch: The branch of the config repository to be used
