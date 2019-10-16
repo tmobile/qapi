@@ -57,7 +57,7 @@ Here, you will configure the jhipster registry password, as well as the cloud co
 
 If you are using the default method of managing secrets with a zip in the local root, place a zip file called "secrets.zip", that is encryped with AES and password protected. This can be done with common programs such as 7-Zip. For more information on the structure of these files, please visit the wiki Sub-Page: [Locally Encrypted Secret Files](https://github.com/tmobile/qapi/wiki/Locally-encrypted-secret-files)
 
-#### File: resources\trust.jks
+ #### (Optional) File: resources\trust.jks
 
 If you need a java key store file to connect to your t-vault instance, place the keystore file here, with the name "trust.jks"
 
