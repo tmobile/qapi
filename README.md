@@ -12,7 +12,7 @@ Below are instructions that will help you get started in getting the qAPI up and
 | ------------ | -------------- | -----------  |
 | Java Runtime Environment (JRE) 1.8.x | java -version | As it is a Java project, Java needs to be installed locally.
 | Maven | mvn --version | Maven is needed to download project dependencies.
-| T-Vault | N/A | The project uses T-mobile's open sourced secret management tool T-Vault, for maintaining all database credentials. Please refer to https://github.com/tmobile/t-vault for more information on T-Vault.
+| T-Vault (Optional) | N/A | The project uses T-mobile's open sourced secret management tool T-Vault, for maintaining all database credentials. Please refer to https://github.com/tmobile/t-vault for more information on T-Vault.
 | Oracle JDBC driver | N/A | The oracle JDBC driver needs to be retrieved from the Oracle website, and once accepting the license terms, the jar can be saved on your local machine/artifactory. Oracle website: https://www.oracle.com/database/technologies/appdev/jdbc-downloads.html Instructions to have pom dependency working: https://www.mkyong.com/maven/how-to-add-oracle-jdbc-driver-in-your-maven-local-repository/
 | Git (Optional) | N/A | You can use git to clone the project locally, or choose to simply download the project as a zip file. To clone the project, using your favorite git GUI tool or from your command line, type: `git clone https://github.com/tmobile/qapi.git` 
 
@@ -33,6 +33,7 @@ Here, you will configure the following values:
     - secretId: T-Vault parameter to authenticate via approle
     - tvaultHost: Host url to your t-vault instance. Example: ` https://myt-vault.myorg.com `
 - repoconfiguration: (Configuration for user specified Repository for query config files)
+    - location: local # Set to 'local' or 'repository', based on where the query config files are maintained
     - repoLocation: Repository where the queries are configured (Git link)
     - repoRoot: Root folder/folders to where the config files live in the repository
     - branch: The branch of the config repository to be used
@@ -56,7 +57,7 @@ Here, you will configure the jhipster registry password, as well as the cloud co
 
 If you are using the default method of managing secrets with a zip in the local root, place a zip file called "secrets.zip", that is encryped with AES and password protected. This can be done with common programs such as 7-Zip. For more information on the structure of these files, please visit the wiki Sub-Page: [Locally Encrypted Secret Files](https://github.com/tmobile/qapi/wiki/Locally-encrypted-secret-files)
 
-#### File: resources\trust.jks
+ #### (Optional) File: resources\trust.jks
 
 If you need a java key store file to connect to your t-vault instance, place the keystore file here, with the name "trust.jks"
 
